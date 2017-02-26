@@ -4,12 +4,29 @@ Submitting this project a few days late so at this point did not go beyond the s
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: naked_twins() works very similarly to eliminate(). We look for instances where there are two identical values, each with two digits in a box within a unit, then we remove any instances of those digits from all the other boxes within the unit.
+A: Naked Twins is constraint similar to Eliminate and Only Choice: when there are two identical values of two digits each for boxes in a unit, while we don't which digits belong to which box, we do know that no other box in the unit can contain either of the two digits. We use constraint propagation by searching all units in the puzzle, finding instances of twins:
+```python
+vals = [values[box] for box in unit]
+twins = [box for box in unit if len(values[box])==2 and vals.count(values[box])==2]
+```
+then removing the twin digits in any other box:
+```python
+  if (box not in twins and d in values[box]):
+    values[box] = values[box].replace(d,"")
+```
+This effectively propagates the Naken Twins constraint and further reduces the puzzle.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: The existing functions (eliminate and only_choice) apply constraint propagation (ensuring all digits are represented only once per unit). By adding the diagonal units to the unitlist, we apply the same constraint
-propagation to the 2 diagonal rows.
+A: By adding the diagonal units to the unitlist, we apply the same constraint propagation used for other units (row, column and square) to the diagonal units. Each algorithm that applies constraint propagation including Eliminate, Only Choice and Naked Twins all operate on units and box peers. By adding diagonal units, these algorithms now see boxes along the two diagonal axis as peers, applying the unit constraints: all digits must be represented once and only once in the unit, in this case the diagonal unit. Modifying for Diagonal Sudoku didn't require making any changes to the algorithms, but rather adding diagonals to the unitlist:
+```python
+diagonal_units= [[],[]]
+for idx, val in enumerate(cols):
+    diagonal_units[0].append(rows[idx]+val)
+for idx, val in enumerate(rows[::-1]):
+    diagonal_units[1].append(val+cols[idx])
+```
+As with all things, im sure there is way to write this much more simply. Feedback welcome!
 
 ### Install
 
