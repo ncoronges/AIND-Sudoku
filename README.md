@@ -14,7 +14,7 @@ then removing the twin digits in any other box:
   if (box not in twins and d in values[box]):
     values[box] = values[box].replace(d,"")
 ```
-This effectively propagates the Naken Twins constraint and further reduces the puzzle.
+This effectively propagates the Naked Twins constraint and further reduces the puzzle.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
@@ -26,7 +26,7 @@ for idx, val in enumerate(cols):
 for idx, val in enumerate(rows[::-1]):
     diagonal_units[1].append(val+cols[idx])
 ```
-As with all things, im sure there is way to write this much more simply. Feedback welcome!
+As with all things, im sure there is a way to write this much more simply. Feedback welcome!
 
 ### Install
 
